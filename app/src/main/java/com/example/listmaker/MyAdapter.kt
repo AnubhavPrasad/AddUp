@@ -1,5 +1,8 @@
 package com.example.listmaker
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,13 +27,14 @@ class MyAdapter(var list: MutableList<Data>): RecyclerView.Adapter<MyAdapter.MyV
     }
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.value.text=list[position].value
+        val db=DatabaseHelper(holder.itemView.context)
         holder.bt.setOnClickListener {
-            val db=DatabaseHelper(holder.itemView.context)
             db.deletespec(holder.value.text.toString())
             list=db.readdata()
             notifyDataSetChanged()
 
         }
+
     }
 
 }
