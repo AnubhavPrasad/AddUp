@@ -29,8 +29,6 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         val res = db.insert(TABLE_NAME, null, cv)
         if (res == (-1).toLong()) {
             Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(context, "ADDED", Toast.LENGTH_SHORT).show()
         }
     }
 

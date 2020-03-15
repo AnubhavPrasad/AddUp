@@ -41,6 +41,7 @@
         app:rippleColor="@color/colorAccent"
         android:theme="@style/floating"
         android:src="@drawable/add_24dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/et_Add"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintHorizontal_bias="0.954"

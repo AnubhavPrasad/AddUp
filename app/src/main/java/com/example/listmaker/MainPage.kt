@@ -1,15 +1,17 @@
 package com.example.listmaker
 
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewDebug
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.ColorInt
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -21,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class MainPage : Fragment() {
     lateinit var binding: FragmentMainPageBinding
     private var listvalue = ""
+    @SuppressLint("ResourceAsColor", "RestrictedApi")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,6 +48,8 @@ class MainPage : Fragment() {
                 }
                 R.id.about->{
                     findNavController().navigate(R.id.action_mainPage_to_aboutFrag)
+                }
+                R.id.theme->{Toast.makeText(context,"Will be implemeted later",Toast.LENGTH_SHORT).show()
                 }
             }
             true
