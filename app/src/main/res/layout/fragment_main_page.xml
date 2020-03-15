@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/customized_tool"
-        app:title="LIST MAKER"
+        app:title="NoteIT"
         app:titleTextColor="#4F0B83"
         android:elevation="10dp"
         >
