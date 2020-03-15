@@ -14,7 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/customized_tool"
-        app:title="LIST MAKER"
+        app:title="NoteIT"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextColor="#4F0B83"
         android:elevation="10dp"
         >
@@ -35,6 +37,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:clickable="true"
+        android:visibility="visible"
         android:src="@drawable/add_24dp"/>
 
 

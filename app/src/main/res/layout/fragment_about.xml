@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    android:background="#ABE0B3"
+    android:background="#ADE9B7"
     tools:context=".AboutFrag">
 
     <androidx.appcompat.widget.Toolbar
@@ -14,7 +14,8 @@
         app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#5F93D5"
+        android:background="#0B8653"
+        app:titleTextColor="#FFF"
         android:elevation="10dp"
         app:title="ABOUT" />
 

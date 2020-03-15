@@ -29,8 +29,6 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         val res = db.insert(TABLE_NAME, null, cv)
         if (res == (-1).toLong()) {
             Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(context, "ADDED", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -52,15 +50,32 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         return list
 
     }
-    fun deletedata(){
-        val db=writableDatabase
-        db.delete(TABLE_NAME,null,null)
-        db.close()
-    }
-    fun deletespec(value:String){
-        val db=writableDatabase
-        db.delete(TABLE_NAME,"$COL_VALUE='$value'",null)
+
+    fun deletedata() {
+        val db = writableDatabase
+        db.delete(TABLE_NAME, null, null)
         db.close()
     }
 
+    fun deletespec(value:String) {
+        val db = writableDatabase
+        db.delete(TABLE_NAME, "$COL_VALUE='$value'", null)
+        db.close()
+    }
+
+    fun updatedata(prev:String, str: String) {
+        val db = readableDatabase
+        val query = "SELECT * FROM $TABLE_NAME"
+        val res = db.rawQuery(query, null)
+        if (res.moveToFirst()) {
+            do {
+                val cv = ContentValues()
+                cv.put(COL_VALUE, str)
+                db.update(TABLE_NAME, cv, "$COL_VALUE='$prev'", null)
+
+            } while (res.moveToNext())
+            res.close()
+            db.close()
+        }
+    }
 }
