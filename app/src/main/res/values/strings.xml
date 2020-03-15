@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ListMaker</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="about">Let\'s List everything on the go..\n\n\u2022 Just click on the add button and enter the title for list.\n\n\u2022 Then enter the list items.\n\n\n\nThat\'s it the list will be stored in your phone and can be viewed later on.
+    </string>
+</resources>
