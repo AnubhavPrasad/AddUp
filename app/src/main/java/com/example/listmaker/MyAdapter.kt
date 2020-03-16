@@ -56,12 +56,13 @@ class MyAdapter(
             dia.show()
             val et = dia.findViewById<EditText>(R.id.et_Add)
             val str = holder.value.text.toString()
-            et?.setText(str)
+            val s=str.replace("₹ ","")
+            et?.setText(s)
             val bt = dia.findViewById<FloatingActionButton>(R.id.bt_update)
             bt?.visibility=View.VISIBLE
             dia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility=View.GONE
             bt?.setOnClickListener {
-                db.updatedata(str, et?.text.toString())
+                db.updatedata(s,et?.text.toString())
                 list = db.readdata()
                 notifyDataSetChanged()
                 dia.dismiss()

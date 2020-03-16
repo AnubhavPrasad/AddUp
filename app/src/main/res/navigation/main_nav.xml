@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/mainPage">
+    app:startDestination="@id/tabbedFragment">
 
     <fragment
         android:id="@+id/mainPage"
@@ -24,5 +24,13 @@
             app:destination="@id/mainPage"
             app:popUpTo="@+id/mainPage"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/tabbedFragment"
+        android:name="com.example.listmaker.TabbedFragment"
+        android:label="TabbedFragment" >
+        <action
+            android:id="@+id/action_tabbedFragment_to_aboutFrag"
+            app:destination="@id/aboutFrag" />
     </fragment>
 </navigation>
