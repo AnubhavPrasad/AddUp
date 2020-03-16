@@ -37,9 +37,9 @@ class MyAdapter(
         return list.size
     }
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint("RestrictedApi", "SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.value.text = list[position].value
+        holder.value.text = "\u20B9 "+list[position].value
         holder.date.text = list[position].date
         if(list[position].value.toInt()>500){
             holder.value.setTextColor(Color.parseColor("#E22323"))
