@@ -12,18 +12,20 @@ val TABLE_NAME = "List"
 val COL_DATE = "date"
 val COL_ID = "id"
 val COL_VALUE = "Value"
-val COL_MONTHDAY="Monthday"
-val TABLE_NAME2="Monthwise"
-val COL_VALUE2="Monthvalue"
-val COL_MONTH="Month"
+val COL_MONTHDAY = "Monthday"
+val TABLE_NAME2 = "Monthwise"
+val COL_VALUE2 = "Monthvalue"
+val COL_MONTH = "Month"
 
-val COL_ID2="id2"
+val COL_ID2 = "id2"
+
 class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 4) {
     override fun onCreate(db: SQLiteDatabase?) {
         val create1 =
             "CREATE TABLE $TABLE_NAME($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,$COL_VALUE VARCHAR(255),$COL_DATE VARCHAR,$COL_MONTHDAY VARCHAR(255));"
         db?.execSQL(create1)
-        val create2="CREATE TABLE $TABLE_NAME2 ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,$COL_MONTH VARCHAR(255),$COL_VALUE2 VARCHAR(255));"
+        val create2 =
+            "CREATE TABLE $TABLE_NAME2 ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,$COL_MONTH VARCHAR(255),$COL_VALUE2 VARCHAR(255));"
         db?.execSQL(create2)
         Log.i("Inside", "Oncreate")
     }
@@ -36,7 +38,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         val cv = ContentValues()
         cv.put(COL_DATE, data.date)
         cv.put(COL_VALUE, data.value)
-        cv.put(COL_MONTHDAY,data.month)
+        cv.put(COL_MONTHDAY, data.month)
         val res = db.insert(TABLE_NAME, null, cv)
         if (res == (-1).toLong()) {
             Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
@@ -54,7 +56,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
                 data.id = res.getString(res.getColumnIndex(COL_ID)).toInt()
                 data.value = res.getString(res.getColumnIndex(COL_VALUE))
                 data.date = res.getString(res.getColumnIndex(COL_DATE))
-                data.month=res.getString(res.getColumnIndex(COL_MONTHDAY))
+                data.month = res.getString(res.getColumnIndex(COL_MONTHDAY))
                 list.add(data)
             } while (res.moveToNext())
             res.close()
@@ -94,36 +96,40 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.update(TABLE_NAME, cv, "$COL_DATE='$date'", null)
         db.close()
     }
-    fun insertmonth(monthdata:MonthData){
-        val db=writableDatabase
-        val cv=ContentValues()
-        cv.put(COL_MONTH,monthdata.month)
-        cv.put(COL_VALUE2,monthdata.monthvalue)
-        db.insert(TABLE_NAME2,null,cv)
+
+    fun insertmonth(monthdata: MonthData) {
+        val db = writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_MONTH, monthdata.month)
+        cv.put(COL_VALUE2, monthdata.monthvalue)
+        db.insert(TABLE_NAME2, null, cv)
         db.close()
     }
-    fun monthread():MutableList<MonthData>{
-        val db=readableDatabase
-        val res=db.rawQuery("SELECT * FROM $TABLE_NAME2",null)
-        val list= mutableListOf<MonthData>()
-        if(res.moveToFirst()){
-            do{
-                val m=MonthData()
-                m.month=res.getString(res.getColumnIndex(COL_MONTH))
-                m.monthvalue=res.getString(res.getColumnIndex(COL_VALUE2))
+
+    fun monthread(): MutableList<MonthData> {
+        val db = readableDatabase
+        val res = db.rawQuery("SELECT * FROM $TABLE_NAME2", null)
+        val list = mutableListOf<MonthData>()
+        if (res.moveToFirst()) {
+            do {
+                val m = MonthData()
+                m.month = res.getString(res.getColumnIndex(COL_MONTH))
+                m.monthvalue = res.getString(res.getColumnIndex(COL_VALUE2))
                 list.add(m)
-            }while (res.moveToNext())
+            } while (res.moveToNext())
 
         }
         res.close()
         db.close()
         return list
     }
-    fun monthdel(){
-        val db=writableDatabase
-        db.delete(TABLE_NAME2,null,null)
+
+    fun monthdel() {
+        val db = writableDatabase
+        db.delete(TABLE_NAME2, null, null)
         db.close()
     }
+
     fun monthupdate(prev: String, new: String, month: String) {
         val db = readableDatabase
         val cv = ContentValues()
@@ -133,23 +139,26 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.update(TABLE_NAME2, cv, "$COL_MONTH='$month'", null)
         db.close()
     }
-    fun monthdelspec(month:String){
-        val db=writableDatabase
-        db.delete(TABLE_NAME2,"$COL_MONTH= '$month'",null)
+
+    fun monthdelspec(month: String) {
+        val db = writableDatabase
+        db.delete(TABLE_NAME2, "$COL_MONTH= '$month'", null)
         db.close()
     }
-    fun deductmonth(monthvalue:String,dayvalue:String,month:String){
-        val db=writableDatabase
-        val cv=ContentValues()
-        cv.put(COL_VALUE2,monthvalue.toInt()-dayvalue.toInt())
-        db.update(TABLE_NAME2,cv,"$COL_MONTH='$month'",null)
+
+    fun deductmonth(monthvalue: String, dayvalue: String, month: String) {
+        val db = writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_VALUE2, monthvalue.toInt() - dayvalue.toInt())
+        db.update(TABLE_NAME2, cv, "$COL_MONTH='$month'", null)
         db.close()
     }
-    fun editmonth(month:String,prev:String,new:String,own:String){
-        val db=writableDatabase
-        val cv=ContentValues()
-        cv.put(COL_VALUE2,(new.toInt()-prev.toInt())+own.toInt())
-        db.update(TABLE_NAME2,cv,"$COL_MONTH ='$month'",null)
+
+    fun editmonth(month: String, prev: String, new: String, own: String) {
+        val db = writableDatabase
+        val cv = ContentValues()
+        cv.put(COL_VALUE2, (new.toInt() - prev.toInt()) + own.toInt())
+        db.update(TABLE_NAME2, cv, "$COL_MONTH ='$month'", null)
         db.close()
 
     }

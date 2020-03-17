@@ -53,7 +53,7 @@ class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.M
         }
         holder.itemView.setOnClickListener {
             val list = mutableListOf<Data>()
-            datelist=db.readdata()
+            datelist = db.readdata()
             for (i in datelist) {
                 if (i.month == monthlist[position].month) {
                     list.add(i)

@@ -15,11 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.listmaker.databinding.FragmentMonthWiseBinding
 
-lateinit var monthrecycler: RecyclerView
-lateinit var dia_alldays:Dialog
+lateinit var monthrecycler: RecyclerView        //  recyclerview for month-wise
+lateinit var dia_alldays: Dialog             //Dialog for click on a month item
+
 class MonthWiseFrag : Fragment() {
     lateinit var binding: FragmentMonthWiseBinding
     lateinit var dialog: AlertDialog.Builder
+
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +36,7 @@ class MonthWiseFrag : Fragment() {
         binding.recyclermonth.layoutManager = LinearLayoutManager(context!!)
         val db = DatabaseHelper(context!!)
         monthlist = db.monthread()
-        dia_alldays=Dialog(context!!)
+        dia_alldays = Dialog(context!!)
         dia_alldays.setContentView(R.layout.alldays_layout)
         monthrecycler.adapter = MonthAdapter(dia_alldays)
         return binding.root

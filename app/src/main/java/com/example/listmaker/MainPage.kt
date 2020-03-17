@@ -3,7 +3,6 @@ package com.example.listmaker
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,14 +21,17 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*
-lateinit var daterecycler:RecyclerView
-lateinit var datedialog_del:AlertDialog.Builder
-lateinit var bottom_sheetdia:BottomSheetDialog
-lateinit var monthlist: MutableList<MonthData>
-lateinit var datelist: MutableList<Data>
+
+lateinit var daterecycler: RecyclerView      //Recyclerview for date-wise
+lateinit var datedialog_del: AlertDialog.Builder     //Alert Dialog for delete of a date value
+lateinit var bottom_sheetdia: BottomSheetDialog     //Bottom sheet dialog that appears from below
+lateinit var monthlist: MutableList<MonthData>      //list of month data
+lateinit var datelist: MutableList<Data>        //list of days data
+
 class MainPage() : Fragment() {
     lateinit var binding: FragmentMainPageBinding
     private var listvalue = ""
+
     @SuppressLint("ResourceAsColor", "RestrictedApi", "SimpleDateFormat")
 
     override fun onCreateView(
@@ -37,7 +39,7 @@ class MainPage() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_page, container, false)
-         bottom_sheetdia = BottomSheetDialog(context!!)
+        bottom_sheetdia = BottomSheetDialog(context!!)
         val db = DatabaseHelper(context!!)
 
         monthlist = db.monthread()
@@ -45,16 +47,18 @@ class MainPage() : Fragment() {
         datedialog_del.create()
         datedialog_del.setTitle("Delete")
         datedialog_del.setMessage("Are you sure? It will automatically deduct from month.")
-        daterecycler=binding.recycler
+        daterecycler = binding.recycler
         datelist = db.readdata()
         binding.recycler.layoutManager = LinearLayoutManager(context!!)
         bottom_sheetdia.setContentView(R.layout.dialog_layout)
         binding.recycler.adapter = MyAdapter(datelist, datedialog_del, bottom_sheetdia)
         binding.floatingActionButton.setOnClickListener {
-            bottom_sheetdia.findViewById<TextView>(R.id.textView)?.text="ADD"
+            bottom_sheetdia.findViewById<TextView>(R.id.textView)?.text = "ADD"
             bottom_sheetdia.findViewById<EditText>(R.id.et_Add)?.setText("")
-            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility = View.VISIBLE
-            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)?.visibility = View.GONE
+            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility =
+                View.VISIBLE
+            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)?.visibility =
+                View.GONE
             bottom_sheetdia.show()
         }
 
@@ -75,7 +79,7 @@ class MainPage() : Fragment() {
                 val datemonthfor = SimpleDateFormat("MMMM")
                 val datemonth = datemonthfor.format(getdate)
                 val monthData = MonthData(0, listvalue, datemonth)
-                val data = Data(listvalue, date,datemonth)
+                val data = Data(listvalue, date, datemonth)
                 var j = 0
                 var k = 0
                 for (i in datelist) {
@@ -100,8 +104,8 @@ class MainPage() : Fragment() {
                     db.insertmonth(monthData)
                 }
                 datelist = db.readdata()
-                monthlist=db.monthread()
-                monthrecycler.adapter=MonthAdapter(dia_alldays)
+                monthlist = db.monthread()
+                monthrecycler.adapter = MonthAdapter(dia_alldays)
                 binding.recycler.adapter = MyAdapter(datelist, datedialog_del, bottom_sheetdia)
                 bottom_sheetdia.dismiss()
             } else {

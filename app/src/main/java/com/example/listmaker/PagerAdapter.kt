@@ -1,6 +1,5 @@
 package com.example.listmaker
 
-import android.app.AlertDialog
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -25,7 +24,7 @@ class PagerAdapter(
         when (position) {
             0 -> fragment = MainPage()
 
-            1 -> fragment =MonthWiseFrag()
+            1 -> fragment = MonthWiseFrag()
         }
         return fragment!!
     }
