@@ -16,12 +16,15 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.listmaker.databinding.FragmentMainPageBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*
-
+lateinit var daterecycler:RecyclerView
+lateinit var datedialog_del:AlertDialog.Builder
+lateinit var bottom_sheetdia:BottomSheetDialog
 lateinit var monthlist: MutableList<MonthData>
 lateinit var datelist: MutableList<Data>
 class MainPage() : Fragment() {
@@ -34,33 +37,34 @@ class MainPage() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_page, container, false)
-        val dia = BottomSheetDialog(context!!)
+         bottom_sheetdia = BottomSheetDialog(context!!)
         val db = DatabaseHelper(context!!)
 
         monthlist = db.monthread()
-        val dialog = AlertDialog.Builder(context)
-        dialog.create()
-        dialog.setTitle("Delete")
-        dialog.setMessage("Are you sure? It will automatically deduct from month.")
+        datedialog_del = AlertDialog.Builder(context)
+        datedialog_del.create()
+        datedialog_del.setTitle("Delete")
+        datedialog_del.setMessage("Are you sure? It will automatically deduct from month.")
+        daterecycler=binding.recycler
         datelist = db.readdata()
         binding.recycler.layoutManager = LinearLayoutManager(context!!)
-        dia.setContentView(R.layout.dialog_layout)
-        binding.recycler.adapter = MyAdapter(datelist, dialog, dia)
+        bottom_sheetdia.setContentView(R.layout.dialog_layout)
+        binding.recycler.adapter = MyAdapter(datelist, datedialog_del, bottom_sheetdia)
         binding.floatingActionButton.setOnClickListener {
-            dia.findViewById<TextView>(R.id.textView)?.text="ADD"
-            dia.findViewById<EditText>(R.id.et_Add)?.setText("")
-            dia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility = View.VISIBLE
-            dia.findViewById<FloatingActionButton>(R.id.bt_update)?.visibility = View.GONE
-            dia.show()
+            bottom_sheetdia.findViewById<TextView>(R.id.textView)?.text="ADD"
+            bottom_sheetdia.findViewById<EditText>(R.id.et_Add)?.setText("")
+            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility = View.VISIBLE
+            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)?.visibility = View.GONE
+            bottom_sheetdia.show()
         }
 
-        dia.findViewById<ImageView>(R.id.close)?.setOnClickListener {
+        bottom_sheetdia.findViewById<ImageView>(R.id.close)?.setOnClickListener {
             Log.i("i", "close")
-            dia.dismiss()
+            bottom_sheetdia.dismiss()
         }
-        dia.findViewById<FloatingActionButton>(R.id.bt_add)?.setOnClickListener {
+        bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.setOnClickListener {
             Log.i("i", "called11122")
-            listvalue = dia.findViewById<EditText>(R.id.et_Add)?.text.toString()
+            listvalue = bottom_sheetdia.findViewById<EditText>(R.id.et_Add)?.text.toString()
             if (listvalue.length > 0) {
                 Log.i("i", "called111")
                 datelist = db.readdata()
@@ -77,7 +81,7 @@ class MainPage() : Fragment() {
                 for (i in datelist) {
                     if (i.date == date) {
                         Log.i("i", "called")
-                        db.updatedata2(i.value, listvalue, date)
+                        db.updatedata(i.value, listvalue, date)
                         j += 1
                         break
                     }
@@ -98,8 +102,8 @@ class MainPage() : Fragment() {
                 datelist = db.readdata()
                 monthlist=db.monthread()
                 monthrecycler.adapter=MonthAdapter(dia_alldays)
-                binding.recycler.adapter = MyAdapter(datelist, dialog, dia)
-                dia.dismiss()
+                binding.recycler.adapter = MyAdapter(datelist, datedialog_del, bottom_sheetdia)
+                bottom_sheetdia.dismiss()
             } else {
                 Toast.makeText(context, "Enter Something", Toast.LENGTH_SHORT).show()
             }

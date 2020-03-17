@@ -20,9 +20,9 @@
         android:label="fragment_about"
         tools:layout="@layout/fragment_about" >
         <action
-            android:id="@+id/action_aboutFrag_to_mainPage"
-            app:destination="@id/mainPage"
-            app:popUpTo="@+id/mainPage"
+            android:id="@+id/action_aboutFrag_to_tabbedFragment"
+            app:destination="@id/tabbedFragment"
+            app:popUpTo="@id/tabbedFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment

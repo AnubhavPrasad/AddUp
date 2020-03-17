@@ -19,7 +19,7 @@ class AboutFrag : Fragment() {
 
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_about,container,false)
         binding.aboutTool.setNavigationOnClickListener {
-            findNavController().navigate(R.id.action_aboutFrag_to_mainPage)
+            findNavController().navigate(R.id.action_aboutFrag_to_tabbedFragment)
         }
         return binding.root
     }

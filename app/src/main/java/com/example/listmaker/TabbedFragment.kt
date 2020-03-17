@@ -29,7 +29,7 @@ class TabbedFragment : Fragment() {
         binding.viewpager.adapter=PagerAdapter(context!!,childFragmentManager)
         binding.tabalyout.setupWithViewPager(binding.viewpager)
         val db=DatabaseHelper(context!!)
-        var list = db.readdata()
+        datelist = db.readdata()
         binding.maintoolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
@@ -45,17 +45,20 @@ class TabbedFragment : Fragment() {
             }
             true
         }
-//        dialog2.setPositiveButton("OK") { d1, _ ->
-//            Log.i("if","called")
-//            db.deletedata()
-//            list = db.readdata()
-//            binding.recycler.adapter = MyAdapter(list, dialog, dia)
-//            d1.dismiss()
-//        }
-//        dialog2.setNegativeButton("CLOSE") { d2, _ ->
-//            Log.i("if","ok")
-//            d2.dismiss()
-//        }
+        dialog2.setPositiveButton("OK") { d1, _ ->
+            Log.i("if","called")
+            db.deletedata()
+            db.monthdel()
+            datelist = db.readdata()
+            monthlist=db.monthread()
+            monthrecycler.adapter=MonthAdapter(dia_alldays)
+            daterecycler.adapter = MyAdapter(datelist, datedialog_del, bottom_sheetdia)
+            d1.dismiss()
+        }
+        dialog2.setNegativeButton("CLOSE") { d2, _ ->
+            Log.i("if","ok")
+            d2.dismiss()
+        }
         return binding.root
     }
 

@@ -76,16 +76,16 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.close()
     }
 
-    fun updatedata(prev: String, new: String) {
+    fun editdata(prev: String, new: String) {
         Log.i("i", "update")
         val db = readableDatabase
         val cv = ContentValues()
         cv.put(COL_VALUE, new)
-        db.update(TABLE_NAME, cv, "$COL_VALUE='$prev'", null)
+        db.update(TABLE_NAME, cv, "$COL_DATE='$prev'", null)
         db.close()
     }
 
-    fun updatedata2(prev: String, new: String, date: String) {
+    fun updatedata(prev: String, new: String, date: String) {
         val db = readableDatabase
         val cv = ContentValues()
         val sum = prev.toInt() + new.toInt()
@@ -144,5 +144,13 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         cv.put(COL_VALUE2,monthvalue.toInt()-dayvalue.toInt())
         db.update(TABLE_NAME2,cv,"$COL_MONTH='$month'",null)
         db.close()
+    }
+    fun editmonth(month:String,prev:String,new:String,own:String){
+        val db=writableDatabase
+        val cv=ContentValues()
+        cv.put(COL_VALUE2,(new.toInt()-prev.toInt())+own.toInt())
+        db.update(TABLE_NAME2,cv,"$COL_MONTH ='$month'",null)
+        db.close()
+
     }
 }

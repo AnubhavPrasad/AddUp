@@ -11,26 +11,27 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/about_tool"
-        app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#0B8653"
-        app:titleTextColor="#FFF"
-        android:elevation="10dp"
-        app:title="ABOUT" />
+        android:background="#4635AE"
+        android:elevation="12dp"
+        app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+        app:title="ABOUT"
+        app:titleTextColor="#FFF" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#455151">
 
         <TextView
-            android:layout_marginTop="10dp"
-            android:textColor="#033122"
-            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/average"
             android:text="@string/about"
+            android:textColor="#F5F8F7"
             android:textSize="24sp" />
     </ScrollView>
 

@@ -52,7 +52,7 @@ class MyAdapter(
             del = holder.date.text.toString()
             dialog.show()
         }
-        holder.itemView.setOnClickListener {
+        holder.value.setOnClickListener {
             Log.i("inside", "clicked")
             dia.show()
             val et = dia.findViewById<EditText>(R.id.et_Add)
@@ -64,9 +64,17 @@ class MyAdapter(
             dia.findViewById<TextView>(R.id.textView)?.text="EDIT"
             dia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility=View.GONE
             bt?.setOnClickListener {
-                db.updatedata(s,et?.text.toString())
+                db.editdata(list[position].date,et?.text.toString())
                 list = db.readdata()
                 notifyDataSetChanged()
+                for(i in monthlist){
+                    if(i.month==list[position].month){
+                        db.editmonth(i.month,s,et?.text.toString(),i.monthvalue)
+                        break
+                    }
+                }
+                monthlist=db.monthread()
+                monthrecycler.adapter=MonthAdapter(dia_alldays)
                 dia.dismiss()
             }
         }
