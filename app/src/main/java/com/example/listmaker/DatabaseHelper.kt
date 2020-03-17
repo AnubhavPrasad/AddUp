@@ -12,14 +12,16 @@ val TABLE_NAME = "List"
 val COL_DATE = "date"
 val COL_ID = "id"
 val COL_VALUE = "Value"
+val COL_MONTHDAY="Monthday"
 val TABLE_NAME2="Monthwise"
 val COL_VALUE2="Monthvalue"
 val COL_MONTH="Month"
+
 val COL_ID2="id2"
 class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 4) {
     override fun onCreate(db: SQLiteDatabase?) {
         val create1 =
-            "CREATE TABLE $TABLE_NAME($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,$COL_VALUE VARCHAR(255),$COL_DATE VARCHAR(255));"
+            "CREATE TABLE $TABLE_NAME($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,$COL_VALUE VARCHAR(255),$COL_DATE VARCHAR,$COL_MONTHDAY VARCHAR(255));"
         db?.execSQL(create1)
         val create2="CREATE TABLE $TABLE_NAME2 ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,$COL_MONTH VARCHAR(255),$COL_VALUE2 VARCHAR(255));"
         db?.execSQL(create2)
@@ -34,6 +36,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         val cv = ContentValues()
         cv.put(COL_DATE, data.date)
         cv.put(COL_VALUE, data.value)
+        cv.put(COL_MONTHDAY,data.month)
         val res = db.insert(TABLE_NAME, null, cv)
         if (res == (-1).toLong()) {
             Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
@@ -51,6 +54,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
                 data.id = res.getString(res.getColumnIndex(COL_ID)).toInt()
                 data.value = res.getString(res.getColumnIndex(COL_VALUE))
                 data.date = res.getString(res.getColumnIndex(COL_DATE))
+                data.month=res.getString(res.getColumnIndex(COL_MONTHDAY))
                 list.add(data)
             } while (res.moveToNext())
             res.close()
@@ -132,6 +136,13 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
     fun monthdelspec(month:String){
         val db=writableDatabase
         db.delete(TABLE_NAME2,"$COL_MONTH= '$month'",null)
+        db.close()
+    }
+    fun deductmonth(monthvalue:String,dayvalue:String,month:String){
+        val db=writableDatabase
+        val cv=ContentValues()
+        cv.put(COL_VALUE2,monthvalue.toInt()-dayvalue.toInt())
+        db.update(TABLE_NAME2,cv,"$COL_MONTH='$month'",null)
         db.close()
     }
 }

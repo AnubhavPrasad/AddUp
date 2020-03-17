@@ -3,6 +3,7 @@ package com.example.listmaker
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.listmaker.databinding.FragmentMonthWiseBinding
 
 lateinit var monthrecycler: RecyclerView
-
+lateinit var dia_alldays:Dialog
 class MonthWiseFrag : Fragment() {
     lateinit var binding: FragmentMonthWiseBinding
     lateinit var dialog: AlertDialog.Builder
@@ -33,7 +34,9 @@ class MonthWiseFrag : Fragment() {
         binding.recyclermonth.layoutManager = LinearLayoutManager(context!!)
         val db = DatabaseHelper(context!!)
         monthlist = db.monthread()
-        monthrecycler.adapter = MonthAdapter()
+        dia_alldays=Dialog(context!!)
+        dia_alldays.setContentView(R.layout.alldays_layout)
+        monthrecycler.adapter = MonthAdapter(dia_alldays)
         return binding.root
 
     }
@@ -43,7 +46,7 @@ class MonthWiseFrag : Fragment() {
         val db = DatabaseHelper(context!!)
         Log.i("start", "start")
         monthlist = db.monthread()
-        monthrecycler.adapter = MonthAdapter()
+        monthrecycler.adapter = MonthAdapter(dia_alldays)
     }
 
 

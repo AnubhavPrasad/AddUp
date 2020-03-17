@@ -34,6 +34,7 @@ class MyAdapter(
     }
 
     override fun getItemCount(): Int {
+        Log.i("pu",list.size.toString())
         return list.size
     }
 
@@ -60,6 +61,7 @@ class MyAdapter(
             et?.setText(s)
             val bt = dia.findViewById<FloatingActionButton>(R.id.bt_update)
             bt?.visibility=View.VISIBLE
+            dia.findViewById<TextView>(R.id.textView)?.text="EDIT"
             dia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility=View.GONE
             bt?.setOnClickListener {
                 db.updatedata(s,et?.text.toString())
@@ -69,6 +71,14 @@ class MyAdapter(
             }
         }
         dialog.setPositiveButton("YES") { dialog, _ ->
+            for(i in monthlist){
+                if(i.month==list[position].month){
+                    db.deductmonth(i.monthvalue,list[position].value,i.month)
+
+                }
+            }
+            monthlist=db.monthread()
+            monthrecycler.adapter=MonthAdapter(dia_alldays )
             db.deletespec(del)
             list = db.readdata()
             notifyDataSetChanged()
