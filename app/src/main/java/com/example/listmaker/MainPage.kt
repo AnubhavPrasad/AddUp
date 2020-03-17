@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isEmpty
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,9 +51,19 @@ class MainPage() : Fragment() {
         daterecycler = binding.recycler
         datelist = db.readdata()
         binding.recycler.layoutManager = LinearLayoutManager(context!!)
+
         bottom_sheetdia.setContentView(R.layout.dialog_layout)
         binding.recycler.adapter = MyAdapter(datelist, datedialog_del, bottom_sheetdia)
         binding.floatingActionButton.setOnClickListener {
+            bottom_sheetdia.findViewById<TextView>(R.id.textView)?.text = "ADD"
+            bottom_sheetdia.findViewById<EditText>(R.id.et_Add)?.setText("")
+            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility =
+                View.VISIBLE
+            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)?.visibility =
+                View.GONE
+            bottom_sheetdia.show()
+        }
+        binding.addText.setOnClickListener {
             bottom_sheetdia.findViewById<TextView>(R.id.textView)?.text = "ADD"
             bottom_sheetdia.findViewById<EditText>(R.id.et_Add)?.setText("")
             bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility =
@@ -103,6 +114,8 @@ class MainPage() : Fragment() {
                 if (k == 0) {
                     db.insertmonth(monthData)
                 }
+                binding.addText.visibility=View.GONE
+                binding.recycler.visibility=View.VISIBLE
                 datelist = db.readdata()
                 monthlist = db.monthread()
                 monthrecycler.adapter = MonthAdapter(dia_alldays)
@@ -115,5 +128,11 @@ class MainPage() : Fragment() {
         return binding.root
     }
 
-
+    override fun onStart() {
+        super.onStart()
+        if( binding.recycler.isEmpty()){
+            binding.recycler.visibility=View.GONE
+            binding.addText.visibility=View.VISIBLE
+        }
+    }
 }

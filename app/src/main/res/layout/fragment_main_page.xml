@@ -10,7 +10,21 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
+        android:visibility="visible"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="30sp"
+        android:visibility="gone"
+        android:padding="10dp"
+        android:id="@+id/add_text"
+        android:textColor="#F7B5CC"
+        android:drawablePadding="5dp"
+        android:drawableLeft="@drawable/ic_add_black_24dp"
+        android:text="ADD"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -22,7 +36,7 @@
         android:layout_marginBottom="20dp"
         android:clickable="true"
         android:visibility="visible"
-        android:src="@drawable/add_24dp"/>
+        android:src="@drawable/ic_add_float_24dp"/>
 
 
 

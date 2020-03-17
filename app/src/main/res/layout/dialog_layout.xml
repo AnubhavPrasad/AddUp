@@ -43,7 +43,7 @@
         android:clickable="true"
         app:rippleColor="@color/colorAccent"
         android:theme="@style/floating"
-        android:src="@drawable/add_24dp"
+        android:src="@drawable/ic_add_float_24dp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/et_Add"
         app:layout_constraintEnd_toEndOf="@+id/textView"
