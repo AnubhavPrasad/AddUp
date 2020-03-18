@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -64,18 +65,24 @@ class MyAdapter(
             dia.findViewById<TextView>(R.id.textView)?.text="EDIT"
             dia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility=View.GONE
             bt?.setOnClickListener {
-                db.editdata(list[position].date,et?.text.toString())
-                list = db.readdata()
-                notifyDataSetChanged()
-                for(i in monthlist){
-                    if(i.month==list[position].month){
-                        db.editmonth(i.month,s,et?.text.toString(),i.monthvalue)
-                        break
-                    }
+                if(et?.text.toString()==""){
+                    Toast.makeText(holder.itemView.context,"Enter a Value",Toast.LENGTH_SHORT).show()
+
                 }
-                monthlist=db.monthread()
-                monthrecycler.adapter=MonthAdapter(dia_alldays)
-                dia.dismiss()
+                else {
+                    db.editdata(list[position].date, et?.text.toString())
+                    list = db.readdata()
+                    notifyDataSetChanged()
+                    for (i in monthlist) {
+                        if (i.month == list[position].month) {
+                            db.editmonth(i.month, s, et?.text.toString(), i.monthvalue)
+                            break
+                        }
+                    }
+                    monthlist = db.monthread()
+                    monthrecycler.adapter = MonthAdapter(dia_alldays)
+                    dia.dismiss()
+                }
             }
         }
         dialog.setPositiveButton("YES") { dialog, _ ->
