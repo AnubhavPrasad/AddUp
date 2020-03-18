@@ -2,11 +2,14 @@ package com.example.listmaker
 
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -21,10 +24,12 @@ class TabbedFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tabbed, container, false)
         binding.maintoolbar.inflateMenu(R.menu.menu)
-        val dialog2 = AlertDialog.Builder(context)
-        dialog2.create()
-        dialog2.setTitle("Delete")
-        dialog2.setMessage("Are you sure ?")
+        val dia_delmonth = AlertDialog.Builder(context)
+        dia_delmonth.create()
+        dia_delmonth.setTitle("Delete")
+        dia_delmonth.setMessage("Are you sure ?")
+        val limit_dialog = Dialog(context!!)
+        limit_dialog.setContentView(R.layout.limit_dialog)
         binding.viewpager.adapter = PagerAdapter(context!!, childFragmentManager)
         binding.tabalyout.setupWithViewPager(binding.viewpager)
         val db = DatabaseHelper(context!!)
@@ -32,7 +37,7 @@ class TabbedFragment : Fragment() {
         binding.maintoolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
-                    dialog2.show()
+                    dia_delmonth.show()
 
                 }
                 R.id.about -> {
@@ -41,10 +46,17 @@ class TabbedFragment : Fragment() {
                 R.id.theme -> {
                     Toast.makeText(context, "Will be implemeted later", Toast.LENGTH_SHORT).show()
                 }
+                R.id.limit -> {
+                    val limit=db.limitread()
+                    limit_dialog.findViewById<EditText>(R.id.daylimit).setText(limit.daywise_limit.toString())
+                    limit_dialog.findViewById<EditText>(R.id.monthlimit).setText(limit.monthwise_limit.toString())
+                    limit_dialog.show()
+
+                }
             }
             true
         }
-        dialog2.setPositiveButton("OK") { d1, _ ->
+        dia_delmonth.setPositiveButton("OK") { d1, _ ->
             Log.i("if", "called")
             db.deletedata()
             db.monthdel()
@@ -54,9 +66,27 @@ class TabbedFragment : Fragment() {
             daterecycler.adapter = MyAdapter(datelist, datedialog_del, bottom_sheetdia)
             d1.dismiss()
         }
-        dialog2.setNegativeButton("CLOSE") { d2, _ ->
+        dia_delmonth.setNegativeButton("CLOSE") { d2, _ ->
             Log.i("if", "ok")
             d2.dismiss()
+        }
+        limit_dialog.findViewById<Button>(R.id.set_bt).setOnClickListener {
+            if (limit_dialog.findViewById<EditText>(R.id.daylimit).text.toString() != "" && limit_dialog.findViewById<EditText>(
+                    R.id.monthlimit
+                ).text.toString() != ""
+            ) {
+                val daywise_limit =
+                    limit_dialog.findViewById<EditText>(R.id.daylimit).text.toString().toInt()
+                val monthwise_limit =
+                    limit_dialog.findViewById<EditText>(R.id.monthlimit).text.toString().toInt()
+                val limit=Limit(daywise_limit, monthwise_limit)
+                db.limitinsert(limit)
+                monthrecycler.adapter = MonthAdapter(dia_alldays)
+                daterecycler.adapter = MyAdapter(datelist, datedialog_del, bottom_sheetdia)
+                limit_dialog.dismiss()
+            } else {
+                Toast.makeText(context, "Enter Limit", Toast.LENGTH_SHORT).show()
+            }
         }
         return binding.root
     }

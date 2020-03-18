@@ -41,14 +41,16 @@ class MyAdapter(
 
     @SuppressLint("RestrictedApi", "SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val db = DatabaseHelper(holder.itemView.context)
+        val limit=db.limitread()
         holder.value.text = "\u20B9 "+list[position].value
         holder.date.text = list[position].date
-        if(list[position].value.toInt()>500){
+        if(list[position].value.toInt()>limit.daywise_limit){
             holder.value.setTextColor(Color.parseColor("#E22323"))
         }else{
             holder.value.setTextColor(Color.BLACK)
         }
-        val db = DatabaseHelper(holder.itemView.context)
+
         holder.bt.setOnClickListener {
             del = holder.date.text.toString()
             dialog.show()

@@ -18,6 +18,10 @@ val COL_VALUE2 = "Monthvalue"
 val COL_MONTH = "Month"
 
 val COL_ID2 = "id2"
+val COL_ID3 = "id3"
+val COL_DAYLIMIT = "daylimit"
+val COL_MONTHLIMIT = "monthlimit"
+val TABLE_NAME3 = "table3"
 
 class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 4) {
     override fun onCreate(db: SQLiteDatabase?) {
@@ -25,9 +29,11 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
             "CREATE TABLE $TABLE_NAME($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,$COL_VALUE VARCHAR(255),$COL_DATE VARCHAR,$COL_MONTHDAY VARCHAR(255));"
         db?.execSQL(create1)
         val create2 =
-            "CREATE TABLE $TABLE_NAME2 ($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,$COL_MONTH VARCHAR(255),$COL_VALUE2 VARCHAR(255));"
+            "CREATE TABLE $TABLE_NAME2 ($COL_ID2 INTEGER PRIMARY KEY AUTOINCREMENT,$COL_MONTH VARCHAR(255),$COL_VALUE2 VARCHAR(255));"
         db?.execSQL(create2)
-        Log.i("Inside", "Oncreate")
+        val create3 =
+            "CREATE TABLE $TABLE_NAME3($COL_ID3 INTEGER PRIMARY KEY AUTOINCREMENT,$COL_DAYLIMIT INTEGER,$COL_MONTHLIMIT INTEGER);"
+        db?.execSQL(create3)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -162,4 +168,25 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.close()
 
     }
+
+    fun limitinsert(limit: Limit) {
+        val db = writableDatabase
+        db.delete(TABLE_NAME3, null, null)
+        val cv = ContentValues()
+        cv.put(COL_DAYLIMIT, limit.daywise_limit)
+        cv.put(COL_MONTHLIMIT, limit.monthwise_limit)
+        db.insert(TABLE_NAME3, null, cv)
+        db.close()
+    }
+
+    fun limitread(): Limit {
+        val db = readableDatabase
+        val res = db.rawQuery("SELECT * FROM $TABLE_NAME3", null)
+        val limit = Limit()
+        if(res.moveToFirst()) {
+            limit.daywise_limit = res.getString(res.getColumnIndex(COL_DAYLIMIT)).toInt()
+            limit.monthwise_limit = res.getString(res.getColumnIndex(COL_MONTHLIMIT)).toInt()
+        }
+    return limit
+}
 }

@@ -1,5 +1,6 @@
 package com.example.listmaker
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,14 @@ class AllDaysAdapter(var list: MutableList<Data>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val date = list[position].date.take(6)
+        val db=DatabaseHelper(holder.itemView.context)
+        val limit=db.limitread()
         holder.date.text = date
+        if(list[position].value.toInt()>limit.daywise_limit ){
+            holder.datevalue.setTextColor(Color.parseColor("#E22323"))
+        }else{
+            holder.date.setTextColor(Color.BLACK)
+        }
         holder.datevalue.text = "₹ " + list[position].value
 
     }

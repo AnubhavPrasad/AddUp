@@ -7,7 +7,10 @@
 
     <item android:id="@+id/theme"
         android:title="Theme"></item>
+    <item android:id="@+id/limit"
+        android:title="Set Limit"/>
     <item
         android:id="@+id/delete"
         android:title="Delete All" />
+
 </menu>

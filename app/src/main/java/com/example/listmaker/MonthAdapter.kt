@@ -2,6 +2,7 @@ package com.example.listmaker
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,11 +38,18 @@ class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.M
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val db = DatabaseHelper(holder.itemView.context)
+        val limit=db.limitread()
         holder.month.text = monthlist[position].month
+        holder.value.text = "\u20B9" + monthlist[position].monthvalue
         holder.delete.setOnClickListener {
             dialog.show()
         }
-        holder.value.text = "\u20B9" + monthlist[position].monthvalue
+        if(monthlist[position].monthvalue.toInt()> limit.monthwise_limit) {
+            holder.value.setTextColor(Color.parseColor("#E22323"))
+        }
+        else{
+            holder.value.setTextColor(Color.BLACK)
+        }
         dialog.setNegativeButton("CLOSE") { d1, _ ->
             d1.dismiss()
         }
