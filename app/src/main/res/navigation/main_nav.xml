@@ -7,30 +7,11 @@
 
     <fragment
         android:id="@+id/mainPage"
-        android:name="com.example.listmaker.MainPage"
+        android:name="com.example.listmaker.DAY.MainPage"
         android:label="fragment_main_page"
-        tools:layout="@layout/fragment_main_page" >
-        <action
-            android:id="@+id/action_mainPage_to_aboutFrag"
-            app:destination="@id/aboutFrag" />
-    </fragment>
-    <fragment
-        android:id="@+id/aboutFrag"
-        android:name="com.example.listmaker.AboutFrag"
-        android:label="fragment_about"
-        tools:layout="@layout/fragment_about" >
-        <action
-            android:id="@+id/action_aboutFrag_to_tabbedFragment"
-            app:destination="@id/tabbedFragment"
-            app:popUpTo="@id/tabbedFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/fragment_main_page" />
     <fragment
         android:id="@+id/tabbedFragment"
-        android:name="com.example.listmaker.TabbedFragment"
-        android:label="TabbedFragment" >
-        <action
-            android:id="@+id/action_tabbedFragment_to_aboutFrag"
-            app:destination="@id/aboutFrag" />
-    </fragment>
+        android:name="com.example.listmaker.MainTab.TabbedFragment"
+        android:label="TabbedFragment" />
 </navigation>

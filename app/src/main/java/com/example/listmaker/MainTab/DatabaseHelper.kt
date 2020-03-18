@@ -1,4 +1,4 @@
-package com.example.listmaker
+package com.example.listmaker.MainTab
 
 import android.content.ContentValues
 import android.content.Context
@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import android.widget.Toast
+import com.example.listmaker.DAY.Data
+import com.example.listmaker.Month.MonthData
 
 val DATABASE_NAME = "MYDB"
 val TABLE_NAME = "List"
@@ -15,7 +17,7 @@ val COL_VALUE = "Value"
 val COL_MONTHDAY = "Monthday"
 val TABLE_NAME2 = "Monthwise"
 val COL_VALUE2 = "Monthvalue"
-val COL_MONTH = "Month"
+val COL_MONTH = "com/example/listmaker/Month"
 
 val COL_ID2 = "id2"
 val COL_ID3 = "id3"
@@ -23,7 +25,8 @@ val COL_DAYLIMIT = "daylimit"
 val COL_MONTHLIMIT = "monthlimit"
 val TABLE_NAME3 = "table3"
 
-class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 4) {
+class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
+    DATABASE_NAME, null, 4) {
     override fun onCreate(db: SQLiteDatabase?) {
         val create1 =
             "CREATE TABLE $TABLE_NAME($COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,$COL_VALUE VARCHAR(255),$COL_DATE VARCHAR,$COL_MONTHDAY VARCHAR(255));"

@@ -1,4 +1,4 @@
-package com.example.listmaker
+package com.example.listmaker.Month
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -10,6 +10,11 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.listmaker.*
+import com.example.listmaker.DAY.Data
+import com.example.listmaker.DAY.datelist
+import com.example.listmaker.DAY.monthlist
+import com.example.listmaker.MainTab.DatabaseHelper
 
 class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.MyViewHolder>() {
     lateinit var dialog: AlertDialog.Builder
@@ -37,7 +42,8 @@ class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.M
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val db = DatabaseHelper(holder.itemView.context)
+        val db =
+            DatabaseHelper(holder.itemView.context)
         val limit=db.limitread()
         holder.month.text = monthlist[position].month
         holder.value.text = "\u20B9" + monthlist[position].monthvalue

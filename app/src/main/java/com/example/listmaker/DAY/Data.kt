@@ -1,4 +1,4 @@
-package com.example.listmaker
+package com.example.listmaker.DAY
 
 data class Data(
     var value: String = "",

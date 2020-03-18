@@ -1,4 +1,4 @@
-package com.example.listmaker
+package com.example.listmaker.DAY
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -12,6 +12,11 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.listmaker.MainTab.DatabaseHelper
+import com.example.listmaker.Month.MonthAdapter
+import com.example.listmaker.Month.dia_alldays
+import com.example.listmaker.Month.monthrecycler
+import com.example.listmaker.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -41,7 +46,8 @@ class MyAdapter(
 
     @SuppressLint("RestrictedApi", "SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val db = DatabaseHelper(holder.itemView.context)
+        val db =
+            DatabaseHelper(holder.itemView.context)
         val limit=db.limitread()
         holder.value.text = "\u20B9 "+list[position].value
         holder.date.text = list[position].date
@@ -82,7 +88,10 @@ class MyAdapter(
                         }
                     }
                     monthlist = db.monthread()
-                    monthrecycler.adapter = MonthAdapter(dia_alldays)
+                    monthrecycler.adapter =
+                        MonthAdapter(
+                            dia_alldays
+                        )
                     dia.dismiss()
                 }
             }
@@ -94,8 +103,10 @@ class MyAdapter(
 
                 }
             }
-            monthlist=db.monthread()
-            monthrecycler.adapter=MonthAdapter(dia_alldays )
+            monthlist =db.monthread()
+            monthrecycler.adapter= MonthAdapter(
+                dia_alldays
+            )
             db.deletespec(del)
             list = db.readdata()
             notifyDataSetChanged()

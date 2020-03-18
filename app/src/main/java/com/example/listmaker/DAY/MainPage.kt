@@ -1,4 +1,4 @@
-package com.example.listmaker
+package com.example.listmaker.DAY
 
 
 import android.annotation.SuppressLint
@@ -12,11 +12,16 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.isEmpty
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.listmaker.MainTab.DatabaseHelper
+import com.example.listmaker.Month.MonthAdapter
+import com.example.listmaker.Month.MonthData
+import com.example.listmaker.Month.dia_alldays
+import com.example.listmaker.Month.monthrecycler
+import com.example.listmaker.R
 import com.example.listmaker.databinding.FragmentMainPageBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,7 +44,8 @@ class MainPage() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_page, container, false)
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_main_page, container, false)
         bottom_sheetdia = BottomSheetDialog(context!!)
         val db = DatabaseHelper(context!!)
 
@@ -52,34 +58,62 @@ class MainPage() : Fragment() {
         datelist = db.readdata()
         binding.recycler.layoutManager = LinearLayoutManager(context!!)
 
-        bottom_sheetdia.setContentView(R.layout.dialog_layout)
-        binding.recycler.adapter = MyAdapter(datelist, datedialog_del, bottom_sheetdia)
+        bottom_sheetdia.setContentView(
+            R.layout.dialog_layout
+        )
+        binding.recycler.adapter = MyAdapter(
+            datelist,
+            datedialog_del,
+            bottom_sheetdia
+        )
         binding.floatingActionButton.setOnClickListener {
-            bottom_sheetdia.findViewById<TextView>(R.id.textView)?.text = "ADD"
-            bottom_sheetdia.findViewById<EditText>(R.id.et_Add)?.setText("")
-            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility =
+            bottom_sheetdia.findViewById<TextView>(
+                R.id.textView
+            )?.text = "ADD"
+            bottom_sheetdia.findViewById<EditText>(
+                R.id.et_Add
+            )?.setText("")
+            bottom_sheetdia.findViewById<FloatingActionButton>(
+                R.id.bt_add
+            )?.visibility =
                 View.VISIBLE
-            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)?.visibility =
+            bottom_sheetdia.findViewById<FloatingActionButton>(
+                R.id.bt_update
+            )?.visibility =
                 View.GONE
             bottom_sheetdia.show()
         }
         binding.addText.setOnClickListener {
-            bottom_sheetdia.findViewById<TextView>(R.id.textView)?.text = "ADD"
-            bottom_sheetdia.findViewById<EditText>(R.id.et_Add)?.setText("")
-            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility =
+            bottom_sheetdia.findViewById<TextView>(
+                R.id.textView
+            )?.text = "ADD"
+            bottom_sheetdia.findViewById<EditText>(
+                R.id.et_Add
+            )?.setText("")
+            bottom_sheetdia.findViewById<FloatingActionButton>(
+                R.id.bt_add
+            )?.visibility =
                 View.VISIBLE
-            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)?.visibility =
+            bottom_sheetdia.findViewById<FloatingActionButton>(
+                R.id.bt_update
+            )?.visibility =
                 View.GONE
             bottom_sheetdia.show()
         }
 
-        bottom_sheetdia.findViewById<ImageView>(R.id.close)?.setOnClickListener {
+        bottom_sheetdia.findViewById<ImageView>(
+            R.id.close
+        )?.setOnClickListener {
             Log.i("i", "close")
             bottom_sheetdia.dismiss()
         }
-        bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.setOnClickListener {
+        bottom_sheetdia.findViewById<FloatingActionButton>(
+            R.id.bt_add
+        )?.setOnClickListener {
             Log.i("i", "called11122")
-            listvalue = bottom_sheetdia.findViewById<EditText>(R.id.et_Add)?.text.toString()
+            listvalue = bottom_sheetdia.findViewById<EditText>(
+                R.id.et_Add
+            )?.text.toString()
             if (listvalue.length > 0) {
                 Log.i("i", "called111")
                 datelist = db.readdata()
@@ -89,8 +123,13 @@ class MainPage() : Fragment() {
                 val date = dateformat.format(getdate)
                 val datemonthfor = SimpleDateFormat("MMMM")
                 val datemonth = datemonthfor.format(getdate)
-                val monthData = MonthData(0, listvalue, datemonth)
-                val data = Data(listvalue, date, datemonth)
+                val monthData = MonthData(
+                    0,
+                    listvalue,
+                    datemonth
+                )
+                val data =
+                    Data(listvalue, date, datemonth)
                 var j = 0
                 var k = 0
                 for (i in datelist) {
@@ -118,8 +157,14 @@ class MainPage() : Fragment() {
                 binding.recycler.visibility=View.VISIBLE
                 datelist = db.readdata()
                 monthlist = db.monthread()
-                monthrecycler.adapter = MonthAdapter(dia_alldays)
-                binding.recycler.adapter = MyAdapter(datelist, datedialog_del, bottom_sheetdia)
+                monthrecycler.adapter = MonthAdapter(
+                    dia_alldays
+                )
+                binding.recycler.adapter = MyAdapter(
+                    datelist,
+                    datedialog_del,
+                    bottom_sheetdia
+                )
                 bottom_sheetdia.dismiss()
             } else {
                 Toast.makeText(context, "Enter Something", Toast.LENGTH_SHORT).show()

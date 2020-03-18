@@ -1,9 +1,11 @@
-package com.example.listmaker
+package com.example.listmaker.MainTab
 
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.example.listmaker.DAY.MainPage
+import com.example.listmaker.Month.MonthWiseFrag
 
 
 private val TAB_TITLES = arrayOf(

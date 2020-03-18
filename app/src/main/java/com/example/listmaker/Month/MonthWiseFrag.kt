@@ -1,4 +1,4 @@
-package com.example.listmaker
+package com.example.listmaker.Month
 
 
 import android.annotation.SuppressLint
@@ -13,7 +13,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.listmaker.MainTab.DatabaseHelper
+import com.example.listmaker.R
 import com.example.listmaker.databinding.FragmentMonthWiseBinding
+import com.example.listmaker.DAY.monthlist
 
 lateinit var monthrecycler: RecyclerView        //  recyclerview for month-wise
 lateinit var dia_alldays: Dialog             //Dialog for click on a month item
@@ -27,7 +30,8 @@ class MonthWiseFrag : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_month_wise, container, false)
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_month_wise, container, false)
         monthrecycler = binding.recyclermonth
         dialog = AlertDialog.Builder(context!!)
         dialog.create()
@@ -38,7 +42,8 @@ class MonthWiseFrag : Fragment() {
         monthlist = db.monthread()
         dia_alldays = Dialog(context!!)
         dia_alldays.setContentView(R.layout.alldays_layout)
-        monthrecycler.adapter = MonthAdapter(dia_alldays)
+        monthrecycler.adapter =
+            MonthAdapter(dia_alldays)
         return binding.root
 
     }
@@ -48,7 +53,8 @@ class MonthWiseFrag : Fragment() {
         val db = DatabaseHelper(context!!)
         Log.i("start", "start")
         monthlist = db.monthread()
-        monthrecycler.adapter = MonthAdapter(dia_alldays)
+        monthrecycler.adapter =
+            MonthAdapter(dia_alldays)
     }
 
 

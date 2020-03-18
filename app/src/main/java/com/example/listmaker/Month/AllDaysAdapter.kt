@@ -1,4 +1,4 @@
-package com.example.listmaker
+package com.example.listmaker.Month
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.listmaker.DAY.Data
+import com.example.listmaker.MainTab.DatabaseHelper
+import com.example.listmaker.R
 
 class AllDaysAdapter(var list: MutableList<Data>) :
     RecyclerView.Adapter<AllDaysAdapter.MyViewHolder>() {
@@ -25,7 +28,8 @@ class AllDaysAdapter(var list: MutableList<Data>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val date = list[position].date.take(6)
-        val db=DatabaseHelper(holder.itemView.context)
+        val db=
+            DatabaseHelper(holder.itemView.context)
         val limit=db.limitread()
         holder.date.text = date
         if(list[position].value.toInt()>limit.daywise_limit ){
