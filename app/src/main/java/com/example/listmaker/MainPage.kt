@@ -130,7 +130,7 @@ class MainPage() : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        if( binding.recycler.isEmpty()){
+        if(datelist.size==0){
             binding.recycler.visibility=View.GONE
             binding.addText.visibility=View.VISIBLE
         }
