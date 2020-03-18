@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import android.widget.Toast
 import com.example.listmaker.DAY.Data
+import com.example.listmaker.MainTab.Limit
 import com.example.listmaker.Month.MonthData
 
 val DATABASE_NAME = "MYDB"
@@ -17,7 +18,7 @@ val COL_VALUE = "Value"
 val COL_MONTHDAY = "Monthday"
 val TABLE_NAME2 = "Monthwise"
 val COL_VALUE2 = "Monthvalue"
-val COL_MONTH = "com/example/listmaker/Month"
+val COL_MONTH = "month"
 
 val COL_ID2 = "id2"
 val COL_ID3 = "id3"
@@ -186,10 +187,17 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
         val db = readableDatabase
         val res = db.rawQuery("SELECT * FROM $TABLE_NAME3", null)
         val limit = Limit()
-        if(res.moveToFirst()) {
+        if (res.moveToFirst()) {
             limit.daywise_limit = res.getString(res.getColumnIndex(COL_DAYLIMIT)).toInt()
             limit.monthwise_limit = res.getString(res.getColumnIndex(COL_MONTHLIMIT)).toInt()
         }
-    return limit
-}
+        return limit
+    }
+
+    fun delspecdays(month: String) {
+        val db = writableDatabase
+        db.delete(TABLE_NAME, "$COL_MONTHDAY= '$month'", null)
+        db.close()
+    }
+
 }

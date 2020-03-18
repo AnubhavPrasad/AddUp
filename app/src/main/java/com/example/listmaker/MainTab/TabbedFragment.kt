@@ -37,7 +37,6 @@ class TabbedFragment : Fragment() {
         val limit_dialog = Dialog(context!!)
         limit_dialog.setContentView(R.layout.limit_dialog)
         binding.viewpager.adapter = PagerAdapter(
-            context!!,
             childFragmentManager
         )
         binding.tabalyout.setupWithViewPager(binding.viewpager)

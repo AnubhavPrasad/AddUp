@@ -11,9 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.listmaker.*
-import com.example.listmaker.DAY.Data
-import com.example.listmaker.DAY.datelist
-import com.example.listmaker.DAY.monthlist
+import com.example.listmaker.DAY.*
 import com.example.listmaker.MainTab.DatabaseHelper
 
 class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.MyViewHolder>() {
@@ -44,6 +42,7 @@ class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.M
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val db =
             DatabaseHelper(holder.itemView.context)
+        monthlist=db.monthread()
         val limit=db.limitread()
         holder.month.text = monthlist[position].month
         holder.value.text = "\u20B9" + monthlist[position].monthvalue
@@ -61,6 +60,13 @@ class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.M
         }
         dialog.setPositiveButton("OK") { d2, _ ->
             db.monthdelspec(monthlist[position].month)
+            for(i in datelist){
+                if(i.month== monthlist[position].month){
+                    db.delspecdays(i.month)
+                }
+            }
+            datelist=db.readdata()
+            daterecycler.adapter=MyAdapter(datelist, datedialog_del, bottom_sheetdia)
             monthlist = db.monthread()
             notifyDataSetChanged()
             d2.dismiss()

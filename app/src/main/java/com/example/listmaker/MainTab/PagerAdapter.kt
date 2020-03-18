@@ -1,6 +1,5 @@
 package com.example.listmaker.MainTab
 
-import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -15,7 +14,6 @@ private val TAB_TITLES = arrayOf(
 
 
 class PagerAdapter(
-    context: Context,
     fm: FragmentManager
 ) :
     FragmentPagerAdapter(fm) {

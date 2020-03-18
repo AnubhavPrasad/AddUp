@@ -48,6 +48,7 @@ class MyAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val db =
             DatabaseHelper(holder.itemView.context)
+        datelist=db.readdata()
         val limit=db.limitread()
         holder.value.text = "\u20B9 "+list[position].value
         holder.date.text = list[position].date
@@ -96,7 +97,7 @@ class MyAdapter(
                 }
             }
         }
-        dialog.setPositiveButton("YES") { dialog, _ ->
+        dialog.setPositiveButton("YES") { _, _ ->
             for(i in monthlist){
                 if(i.month==list[position].month){
                     db.deductmonth(i.monthvalue,list[position].value,i.month)
