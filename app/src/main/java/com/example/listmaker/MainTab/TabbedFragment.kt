@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.listmaker.DAY.*
 import com.example.listmaker.Month.MonthAdapter
+import com.example.listmaker.Month.MonthData
 import com.example.listmaker.Month.dia_alldays
 import com.example.listmaker.Month.monthrecycler
 import com.example.listmaker.R
@@ -57,10 +58,13 @@ class TabbedFragment : Fragment() {
                 }
                 R.id.limit -> {
                     val limit=db.limitread()
-                    limit_dialog.findViewById<EditText>(R.id.daylimit).setText(limit.daywise_limit.toString())
-                    limit_dialog.findViewById<EditText>(R.id.monthlimit).setText(limit.monthwise_limit.toString())
+                    if(limit.daywise_limit!= Int.MAX_VALUE&&limit.monthwise_limit!= Int.MAX_VALUE) {
+                        limit_dialog.findViewById<EditText>(R.id.daylimit)
+                            .setText(limit.daywise_limit.toString())
+                        limit_dialog.findViewById<EditText>(R.id.monthlimit)
+                            .setText(limit.monthwise_limit.toString())
+                    }
                     limit_dialog.show()
-
                 }
             }
             true

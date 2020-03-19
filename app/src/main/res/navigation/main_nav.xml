@@ -13,5 +13,21 @@
     <fragment
         android:id="@+id/tabbedFragment"
         android:name="com.example.listmaker.MainTab.TabbedFragment"
-        android:label="TabbedFragment" />
+        android:label="TabbedFragment" >
+        <action
+            android:id="@+id/action_tabbedFragment_to_graphFrag"
+            app:destination="@id/graphFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/monthWiseFrag"
+        android:name="com.example.listmaker.Month.MonthWiseFrag"
+        android:label="MonthWiseFrag" >
+        <action
+            android:id="@+id/action_monthWiseFrag_to_graphFrag"
+            app:destination="@id/graphFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/graphFrag"
+        android:name="com.example.listmaker.Month.GraphFrag"
+        android:label="GraphFrag" />
 </navigation>

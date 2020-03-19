@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "222742256341",
+    "firebase_url": "https://addit-a68f7.firebaseio.com",
+    "project_id": "addit-a68f7",
+    "storage_bucket": "addit-a68f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222742256341:android:9cacde8e9ccb585176205c",
+        "android_client_info": {
+          "package_name": "com.example.listmaker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222742256341-2auo6ab8kaj5eh7jrseuvtv57k06dh3q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlec26zNC2UsjnFB571wECNBfgOYhlXWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222742256341-2auo6ab8kaj5eh7jrseuvtv57k06dh3q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
