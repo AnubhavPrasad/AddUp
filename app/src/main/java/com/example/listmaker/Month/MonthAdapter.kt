@@ -16,7 +16,7 @@ import com.example.listmaker.MainTab.DatabaseHelper
 
 class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.MyViewHolder>() {
     lateinit var dialog: AlertDialog.Builder
-
+    lateinit var del:String
     class MyViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         var month = itemview.findViewById<TextView>(R.id.date)
         var value = itemview.findViewById<TextView>(R.id.text)
@@ -30,7 +30,7 @@ class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.M
             LinearLayoutManager(parent.context)
         dialog = AlertDialog.Builder(parent.context)
         dialog.setTitle("Delete")
-        dialog.setMessage("Are you Sure ?")
+        dialog.setMessage("Are you Sure? Days contributing to it will also be deleted.")
         dialog.create()
         return MyViewHolder(view)
     }
@@ -47,6 +47,7 @@ class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.M
         holder.month.text = monthlist[position].month
         holder.value.text = "\u20B9" + monthlist[position].monthvalue
         holder.delete.setOnClickListener {
+            del=holder.month.text.toString()
             dialog.show()
         }
         if(monthlist[position].monthvalue.toInt()> limit.monthwise_limit) {
@@ -59,9 +60,9 @@ class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.M
             d1.dismiss()
         }
         dialog.setPositiveButton("OK") { d2, _ ->
-            db.monthdelspec(monthlist[position].month)
+            db.monthdelspec(del)
             for(i in datelist){
-                if(i.month== monthlist[position].month){
+                if(i.month== del){
                     db.delspecdays(i.month)
                 }
             }
