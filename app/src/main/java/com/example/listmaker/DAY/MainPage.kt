@@ -3,6 +3,7 @@ package com.example.listmaker.DAY
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -36,7 +37,7 @@ lateinit var datelist: MutableList<Data>        //list of days data
 
 class MainPage() : Fragment() {
     lateinit var binding: FragmentMainPageBinding
-    private var listvalue = ""
+    private var itemprice = ""
 
     @SuppressLint("ResourceAsColor", "RestrictedApi", "SimpleDateFormat")
 
@@ -44,11 +45,14 @@ class MainPage() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater,
-            R.layout.fragment_main_page, container, false)
-        bottom_sheetdia = BottomSheetDialog(context!!)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_main_page, container, false
+        )
+        bottom_sheetdia =BottomSheetDialog(context!!)
+        val allitem_dia= Dialog(context!!)
+        allitem_dia.setContentView(R.layout.all_items)
         val db = DatabaseHelper(context!!)
-
         monthlist = db.monthread()
         datedialog_del = AlertDialog.Builder(context)
         datedialog_del.create()
@@ -64,15 +68,16 @@ class MainPage() : Fragment() {
         binding.recycler.adapter = MyAdapter(
             datelist,
             datedialog_del,
-            bottom_sheetdia
+            allitem_dia
         )
         binding.floatingActionButton.setOnClickListener {
             bottom_sheetdia.findViewById<TextView>(
                 R.id.textView
             )?.text = "ADD"
             bottom_sheetdia.findViewById<EditText>(
-                R.id.et_Add
+                R.id.item_et
             )?.setText("")
+            bottom_sheetdia.findViewById<EditText>(R.id.itemprice_et)?.setText("")
             bottom_sheetdia.findViewById<FloatingActionButton>(
                 R.id.bt_add
             )?.visibility =
@@ -88,16 +93,9 @@ class MainPage() : Fragment() {
                 R.id.textView
             )?.text = "ADD"
             bottom_sheetdia.findViewById<EditText>(
-                R.id.et_Add
+                R.id.item_et
             )?.setText("")
-            bottom_sheetdia.findViewById<FloatingActionButton>(
-                R.id.bt_add
-            )?.visibility =
-                View.VISIBLE
-            bottom_sheetdia.findViewById<FloatingActionButton>(
-                R.id.bt_update
-            )?.visibility =
-                View.GONE
+            bottom_sheetdia.findViewById<EditText>(R.id.itemprice_et)?.setText("")
             bottom_sheetdia.show()
         }
 
@@ -110,11 +108,11 @@ class MainPage() : Fragment() {
         bottom_sheetdia.findViewById<FloatingActionButton>(
             R.id.bt_add
         )?.setOnClickListener {
-            Log.i("i", "called11122")
-            listvalue = bottom_sheetdia.findViewById<EditText>(
-                R.id.et_Add
+            itemprice = bottom_sheetdia.findViewById<EditText>(
+                R.id.itemprice_et
             )?.text.toString()
-            if (listvalue.length > 0) {
+            var item= bottom_sheetdia.findViewById<EditText>(R.id.item_et)?.text.toString()
+            if (itemprice.length > 0) {
                 Log.i("i", "called111")
                 datelist = db.readdata()
                 monthlist = db.monthread()
@@ -125,24 +123,25 @@ class MainPage() : Fragment() {
                 val datemonth = datemonthfor.format(getdate)
                 val monthData = MonthData(
                     0,
-                    listvalue,
+                    itemprice,
                     datemonth
                 )
+                val itemData=ItemData(item,itemprice,date)
                 val data =
-                    Data(listvalue, date, datemonth)
+                    Data(itemprice, date, datemonth,itemData)
                 var j = 0
                 var k = 0
                 for (i in datelist) {
                     if (i.date == date) {
                         Log.i("i", "called")
-                        db.updatedata(i.value, listvalue, date)
+                        db.updatedata(i.value, itemprice, date,itemData,datemonth)
                         j += 1
                         break
                     }
                 }
                 for (i in monthlist) {
                     if (i.month == datemonth) {
-                        db.monthupdate(i.monthvalue, listvalue, datemonth)
+                        db.monthupdate(i.monthvalue, itemprice, datemonth)
                         k += 1
                         break
                     }
@@ -153,8 +152,8 @@ class MainPage() : Fragment() {
                 if (k == 0) {
                     db.insertmonth(monthData)
                 }
-                binding.addText.visibility=View.GONE
-                binding.recycler.visibility=View.VISIBLE
+                binding.addText.visibility = View.GONE
+                binding.recycler.visibility = View.VISIBLE
                 datelist = db.readdata()
                 monthlist = db.monthread()
                 monthrecycler.adapter = MonthAdapter(
@@ -163,7 +162,7 @@ class MainPage() : Fragment() {
                 binding.recycler.adapter = MyAdapter(
                     datelist,
                     datedialog_del,
-                    bottom_sheetdia
+                   allitem_dia
                 )
                 bottom_sheetdia.dismiss()
             } else {
@@ -175,9 +174,9 @@ class MainPage() : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        if(datelist.size==0){
-            binding.recycler.visibility=View.GONE
-            binding.addText.visibility=View.VISIBLE
+        if (datelist.size == 0) {
+            binding.recycler.visibility = View.GONE
+            binding.addText.visibility = View.VISIBLE
         }
     }
 }

@@ -53,6 +53,7 @@ class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.M
         if(monthlist[position].monthvalue.toInt()> limit.monthwise_limit) {
             holder.value.setTextColor(Color.parseColor("#E22323"))
         }
+
         else{
             holder.value.setTextColor(Color.BLACK)
         }

@@ -2,15 +2,15 @@ package com.example.listmaker.DAY
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.Dialog
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.listmaker.MainTab.DatabaseHelper
 import com.example.listmaker.Month.MonthAdapter
@@ -18,12 +18,11 @@ import com.example.listmaker.Month.dia_alldays
 import com.example.listmaker.Month.monthrecycler
 import com.example.listmaker.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MyAdapter(
     var list: MutableList<Data>,
     var dialog: AlertDialog.Builder,
-    var dia: BottomSheetDialog
+    var itemdia:Dialog
 ) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     lateinit var del: String
 
@@ -40,7 +39,7 @@ class MyAdapter(
     }
 
     override fun getItemCount(): Int {
-        Log.i("pu",list.size.toString())
+        Log.i("pu", list.size.toString())
         return list.size
     }
 
@@ -48,13 +47,13 @@ class MyAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val db =
             DatabaseHelper(holder.itemView.context)
-        datelist=db.readdata()
-        val limit=db.limitread()
-        holder.value.text = "\u20B9 "+list[position].value
+        datelist = db.readdata()
+        val limit = db.limitread()
+        holder.value.text = "\u20B9 " + list[position].value
         holder.date.text = list[position].date
-        if(list[position].value.toInt()>limit.daywise_limit){
+        if (list[position].value.toInt() > limit.daywise_limit) {
             holder.value.setTextColor(Color.parseColor("#E22323"))
-        }else{
+        } else {
             holder.value.setTextColor(Color.BLACK)
         }
 
@@ -62,52 +61,27 @@ class MyAdapter(
             del = holder.date.text.toString()
             dialog.show()
         }
-        holder.value.setOnClickListener {
+        holder.itemView.setOnClickListener {
             Log.i("inside", "clicked")
-            dia.show()
-            val et = dia.findViewById<EditText>(R.id.et_Add)
-            val str = holder.value.text.toString()
-            val s=str.replace("₹ ","")
-            et?.setText(s)
-            val bt = dia.findViewById<FloatingActionButton>(R.id.bt_update)
-            bt?.visibility=View.VISIBLE
-            dia.findViewById<TextView>(R.id.textView)?.text="EDIT"
-            dia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility=View.GONE
-            bt?.setOnClickListener {
-                if(et?.text.toString()==""){
-                    Toast.makeText(holder.itemView.context,"Enter a Value",Toast.LENGTH_SHORT).show()
-
-                }
-                else {
-                    db.editdata(list[position].date, et?.text.toString())
-                    list = db.readdata()
-                    notifyDataSetChanged()
-                    for (i in monthlist) {
-                        if (i.month == list[position].month) {
-                            db.editmonth(i.month, s, et?.text.toString(), i.monthvalue)
-                            break
-                        }
-                    }
-                    monthlist = db.monthread()
-                    monthrecycler.adapter =
-                        MonthAdapter(
-                            dia_alldays
-                        )
-                    dia.dismiss()
-                }
-            }
+            val items=db.readitems(holder.date.text.toString())
+            val itemrec=itemdia.findViewById<RecyclerView>(R.id.items_recycler)
+            itemrec.layoutManager=LinearLayoutManager(holder.itemView.context)
+            itemrec.adapter=ItemsAdapter(items,holder.date.text.toString(),list[position].value,list[position].month)
+            itemdia.show()
         }
         dialog.setPositiveButton("YES") { _, _ ->
-            for(i in monthlist){
-                if(i.month==list[position].month){
-                    db.deductmonth(i.monthvalue,list[position].value,i.month)
+            for (i in monthlist) {
+                if (i.month == list[position].month) {
+                    db.deductmonth(i.monthvalue, list[position].value, i.month)
 
                 }
             }
-            monthlist =db.monthread()
-            monthrecycler.adapter= MonthAdapter(
+            monthlist = db.monthread()
+            monthrecycler.adapter = MonthAdapter(
                 dia_alldays
             )
+            db.itemdel(del)
+            db.readitems(holder.date.text.toString())
             db.deletespec(del)
             list = db.readdata()
             notifyDataSetChanged()

@@ -73,6 +73,7 @@ class TabbedFragment : Fragment() {
             Log.i("if", "called")
             db.deletedata()
             db.monthdel()
+            db.delallitem()
             datelist = db.readdata()
             monthlist = db.monthread()
             monthrecycler.adapter = MonthAdapter(
