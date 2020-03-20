@@ -9,7 +9,11 @@
         android:id="@+id/mainPage"
         android:name="com.example.listmaker.DAY.MainPage"
         android:label="fragment_main_page"
-        tools:layout="@layout/fragment_main_page" />
+        tools:layout="@layout/fragment_main_page" >
+        <action
+            android:id="@+id/action_mainPage_to_pieFragment"
+            app:destination="@id/pieFragment" />
+    </fragment>
     <fragment
         android:id="@+id/tabbedFragment"
         android:name="com.example.listmaker.MainTab.TabbedFragment"
@@ -17,6 +21,9 @@
         <action
             android:id="@+id/action_tabbedFragment_to_graphFrag"
             app:destination="@id/graphFrag" />
+        <action
+            android:id="@+id/action_tabbedFragment_to_pieFragment2"
+            app:destination="@id/pieFragment" />
     </fragment>
     <fragment
         android:id="@+id/monthWiseFrag"
@@ -30,4 +37,8 @@
         android:id="@+id/graphFrag"
         android:name="com.example.listmaker.Month.GraphFrag"
         android:label="GraphFrag" />
+    <fragment
+        android:id="@+id/pieFragment"
+        android:name="com.example.listmaker.DAY.PieFragment"
+        android:label="PieFragment" />
 </navigation>

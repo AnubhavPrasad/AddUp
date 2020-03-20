@@ -81,8 +81,7 @@ class TabbedFragment : Fragment() {
             )
             daterecycler.adapter = MyAdapter(
                 datelist,
-                datedialog_del,
-                bottom_sheetdia
+                datedialog_del
             )
             d1.dismiss()
         }
@@ -109,8 +108,7 @@ class TabbedFragment : Fragment() {
                 )
                 daterecycler.adapter = MyAdapter(
                     datelist,
-                    datedialog_del,
-                    bottom_sheetdia
+                    datedialog_del
                 )
                 limit_dialog.dismiss()
             } else {

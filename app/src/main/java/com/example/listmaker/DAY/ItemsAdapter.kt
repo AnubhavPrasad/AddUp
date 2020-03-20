@@ -1,5 +1,7 @@
 package com.example.listmaker.DAY
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,18 +34,22 @@ class ItemsAdapter(var list: MutableList<ItemData>, var date: String,var mainval
 
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.item.text = list[position].item
         holder.item_price.text = list[position].itemprice
         holder.itemView.setOnClickListener {
             bottom_sheetdia.show()
+            Log.i("q","in")
             val previtem = holder.item.text.toString()
             val previtemprice = holder.item_price.text.toString()
             val item = bottom_sheetdia.findViewById<EditText>(R.id.item_et)
             val item_price = bottom_sheetdia.findViewById<EditText>(R.id.itemprice_et)
             item?.setText(previtem)
             item_price?.setText(previtemprice)
-            val bt = bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)
+            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility=View.GONE
+            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)?.visibility=View.VISIBLE
+            val bt = bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)
             bottom_sheetdia.findViewById<TextView>(R.id.textView)?.text = "EDIT"
             bt?.setOnClickListener {
                 if(item?.text.toString()!=""&&item_price?.text.toString()!="") {
@@ -63,7 +69,7 @@ class ItemsAdapter(var list: MutableList<ItemData>, var date: String,var mainval
                     }
                     monthlist=db.monthread()
                     monthrecycler.adapter=MonthAdapter(dia_alldays)
-                    daterecycler.adapter=MyAdapter(datelist, datedialog_del, bottom_sheetdia)
+                    daterecycler.adapter=MyAdapter(datelist, datedialog_del)
                     list = db.readitems(date)
                     notifyDataSetChanged()
                     bottom_sheetdia.dismiss()

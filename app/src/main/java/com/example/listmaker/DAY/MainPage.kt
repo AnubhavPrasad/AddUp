@@ -34,7 +34,7 @@ lateinit var datedialog_del: AlertDialog.Builder     //Alert Dialog for delete o
 lateinit var bottom_sheetdia: BottomSheetDialog     //Bottom sheet dialog that appears from below
 lateinit var monthlist: MutableList<MonthData>      //list of month data
 lateinit var datelist: MutableList<Data>        //list of days data
-
+lateinit var itemrec:RecyclerView
 class MainPage() : Fragment() {
     lateinit var binding: FragmentMainPageBinding
     private var itemprice = ""
@@ -50,8 +50,6 @@ class MainPage() : Fragment() {
             R.layout.fragment_main_page, container, false
         )
         bottom_sheetdia =BottomSheetDialog(context!!)
-        val allitem_dia= Dialog(context!!)
-        allitem_dia.setContentView(R.layout.all_items)
         val db = DatabaseHelper(context!!)
         monthlist = db.monthread()
         datedialog_del = AlertDialog.Builder(context)
@@ -65,10 +63,10 @@ class MainPage() : Fragment() {
         bottom_sheetdia.setContentView(
             R.layout.dialog_layout
         )
+
         binding.recycler.adapter = MyAdapter(
             datelist,
-            datedialog_del,
-            allitem_dia
+            datedialog_del
         )
         binding.floatingActionButton.setOnClickListener {
             bottom_sheetdia.findViewById<TextView>(
@@ -77,15 +75,9 @@ class MainPage() : Fragment() {
             bottom_sheetdia.findViewById<EditText>(
                 R.id.item_et
             )?.setText("")
+            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)?.visibility=View.GONE
+            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility=View.VISIBLE
             bottom_sheetdia.findViewById<EditText>(R.id.itemprice_et)?.setText("")
-            bottom_sheetdia.findViewById<FloatingActionButton>(
-                R.id.bt_add
-            )?.visibility =
-                View.VISIBLE
-            bottom_sheetdia.findViewById<FloatingActionButton>(
-                R.id.bt_update
-            )?.visibility =
-                View.GONE
             bottom_sheetdia.show()
         }
         binding.addText.setOnClickListener {
@@ -95,6 +87,8 @@ class MainPage() : Fragment() {
             bottom_sheetdia.findViewById<EditText>(
                 R.id.item_et
             )?.setText("")
+            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)?.visibility=View.GONE
+            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility=View.VISIBLE
             bottom_sheetdia.findViewById<EditText>(R.id.itemprice_et)?.setText("")
             bottom_sheetdia.show()
         }
@@ -112,7 +106,7 @@ class MainPage() : Fragment() {
                 R.id.itemprice_et
             )?.text.toString()
             var item= bottom_sheetdia.findViewById<EditText>(R.id.item_et)?.text.toString()
-            if (itemprice.length > 0) {
+            if (itemprice.length > 0&&item.length>0) {
                 Log.i("i", "called111")
                 datelist = db.readdata()
                 monthlist = db.monthread()
@@ -161,8 +155,7 @@ class MainPage() : Fragment() {
                 )
                 binding.recycler.adapter = MyAdapter(
                     datelist,
-                    datedialog_del,
-                   allitem_dia
+                    datedialog_del
                 )
                 bottom_sheetdia.dismiss()
             } else {

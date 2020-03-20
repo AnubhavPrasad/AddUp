@@ -68,7 +68,7 @@ class MonthAdapter(var alldaysdia: Dialog) : RecyclerView.Adapter<MonthAdapter.M
                 }
             }
             datelist=db.readdata()
-            daterecycler.adapter=MyAdapter(datelist, datedialog_del, bottom_sheetdia)
+            daterecycler.adapter=MyAdapter(datelist, datedialog_del)
             monthlist = db.monthread()
             notifyDataSetChanged()
             d2.dismiss()

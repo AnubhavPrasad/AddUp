@@ -9,7 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.listmaker.MainTab.DatabaseHelper
@@ -17,24 +19,30 @@ import com.example.listmaker.Month.MonthAdapter
 import com.example.listmaker.Month.dia_alldays
 import com.example.listmaker.Month.monthrecycler
 import com.example.listmaker.R
+import com.github.mikephil.charting.charts.PieChart
 import com.google.android.material.bottomsheet.BottomSheetDialog
-
+lateinit var items:MutableList<ItemData>
 class MyAdapter(
     var list: MutableList<Data>,
-    var dialog: AlertDialog.Builder,
-    var itemdia:Dialog
+    var dialog: AlertDialog.Builder
+
 ) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     lateinit var del: String
-
+    lateinit var itemsdia:Dialog
+    lateinit var itemrec:RecyclerView
     class MyViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         var value = itemview.findViewById<TextView>(R.id.text)
         var bt = itemview.findViewById<Button>(R.id.bt_delete)
         val date = itemview.findViewById<TextView>(R.id.date)
+        val pie=itemview.findViewById<ImageView>(R.id.pie_image)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false)
+        itemsdia= Dialog(parent.context)
+        itemsdia.setContentView(R.layout.all_items)
+        itemrec=itemsdia.findViewById(R.id.items_recycler)
         return MyViewHolder(view)
     }
 
@@ -63,11 +71,15 @@ class MyAdapter(
         }
         holder.itemView.setOnClickListener {
             Log.i("inside", "clicked")
-            val items=db.readitems(holder.date.text.toString())
-            val itemrec=itemdia.findViewById<RecyclerView>(R.id.items_recycler)
+            items=db.readitems(holder.date.text.toString())
             itemrec.layoutManager=LinearLayoutManager(holder.itemView.context)
             itemrec.adapter=ItemsAdapter(items,holder.date.text.toString(),list[position].value,list[position].month)
-            itemdia.show()
+            itemsdia.show()
+            Log.i("inside","show")
+        }
+        holder.pie.setOnClickListener {
+            items=db.readitems(holder.date.text.toString())
+            holder.itemView.findNavController().navigate(R.id.action_tabbedFragment_to_pieFragment2)
         }
         dialog.setPositiveButton("YES") { _, _ ->
             for (i in monthlist) {
