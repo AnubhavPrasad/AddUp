@@ -81,7 +81,7 @@ class MyAdapter(
             items=db.readitems(holder.date.text.toString())
             holder.itemView.findNavController().navigate(R.id.action_tabbedFragment_to_pieFragment2)
         }
-        dialog.setPositiveButton("YES") { _, _ ->
+        dialog.setPositiveButton("YES") { dialog, _ ->
             for (i in monthlist) {
                 if (i.month == list[position].month) {
                     db.deductmonth(i.monthvalue, list[position].value, i.month)
@@ -98,6 +98,7 @@ class MyAdapter(
             list = db.readdata()
             notifyDataSetChanged()
             db.close()
+            dialog.dismiss()
         }
         dialog.setNegativeButton("CLOSE") { dialog, _ ->
             dialog.dismiss()
