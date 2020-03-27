@@ -32,7 +32,7 @@ class MyAdapter(
     lateinit var itemrec:RecyclerView
     class MyViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         var value = itemview.findViewById<TextView>(R.id.text)
-        var bt = itemview.findViewById<Button>(R.id.bt_delete)
+        var bt = itemview.findViewById<ImageView>(R.id.bt_delete)
         val date = itemview.findViewById<TextView>(R.id.date)
         val pie=itemview.findViewById<ImageView>(R.id.pie_image)
     }

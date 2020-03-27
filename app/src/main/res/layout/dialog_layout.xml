@@ -12,10 +12,10 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:padding="10dp"
-        android:paddingStart="40dp"
+        android:paddingStart="60dp"
         android:text="ADD"
         android:textColor="#E3C1F0"
-        android:textSize="20sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,12 +68,13 @@
         app:rippleColor="@color/colorAccent" />
 
     <ImageView
-
         android:id="@+id/close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="52dp"
+        android:layout_height="35dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="4dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:src="@drawable/ic_close_black_24dp"
         app:layout_constraintBottom_toTopOf="@+id/item_et"
         app:layout_constraintEnd_toStartOf="@+id/bt_add"
