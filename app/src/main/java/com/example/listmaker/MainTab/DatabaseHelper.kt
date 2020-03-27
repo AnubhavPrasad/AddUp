@@ -8,7 +8,6 @@ import android.util.Log
 import android.widget.Toast
 import com.example.listmaker.DAY.Data
 import com.example.listmaker.DAY.ItemData
-import com.example.listmaker.MainTab.Limit
 import com.example.listmaker.Month.MonthData
 
 val DATABASE_NAME = "MYDB"
@@ -262,5 +261,16 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context,
         db.delete(TABLE_NAME4,null,null)
         db.close()
     }
-
+    fun itemdelspec(item:String,item_price:String){
+        val db=writableDatabase
+        db.delete(TABLE_NAME4,"$ITEM='$item' AND $ITEM_PRICE='$item_price'",null)
+        db.close()
+    }
+    fun deductitem(item_price: String, date: String,date_value:String){
+        val db=writableDatabase
+        val cv=ContentValues()
+        cv.put(COL_VALUE,date_value.toInt()-item_price.toInt())
+        db.update(TABLE_NAME,cv,"$COL_DATE='$date'",null)
+        db.close()
+    }
 }

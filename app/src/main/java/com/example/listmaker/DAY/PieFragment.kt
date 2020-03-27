@@ -39,6 +39,7 @@ class PieFragment : Fragment() {
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS)
         val piedata=PieData(xval,pieDataSet)
         piedata.setValueTextColor(Color.WHITE)
+        pieDataSet.sliceSpace=3f
         piedata.setValueTextSize(13f)
         pieChart.data=piedata
         pieDataSet.sliceSpace=2f
