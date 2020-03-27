@@ -4,6 +4,7 @@ package com.example.listmaker.MainTab
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,10 +16,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.listmaker.DAY.*
-import com.example.listmaker.Month.MonthAdapter
-import com.example.listmaker.Month.MonthData
-import com.example.listmaker.Month.dia_alldays
-import com.example.listmaker.Month.monthrecycler
+import com.example.listmaker.MainActivity
+import com.example.listmaker.Month.*
 import com.example.listmaker.R
 import com.example.listmaker.databinding.FragmentTabbedBinding
 
@@ -52,9 +51,6 @@ class TabbedFragment : Fragment() {
                 R.id.about -> {
                    startActivity(Intent(context,
                        AboutActivity::class.java))
-                }
-                R.id.theme -> {
-                    Toast.makeText(context, "Will be implemeted later", Toast.LENGTH_SHORT).show()
                 }
                 R.id.limit -> {
                     val limit=db.limitread()
