@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import com.example.listmaker.MainTab.DatabaseHelper
 import com.example.listmaker.Month.MonthAdapter
@@ -28,10 +28,11 @@ class ItemsAdapter(
     class MyViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         var item = itemview.findViewById<TextView>(R.id.item_txt)
         var item_price = itemview.findViewById<TextView>(R.id.item_price_txt)
-        val delete = itemview.findViewById<ImageView>(R.id.delete_item)
+        val toolbar = itemview.findViewById<Toolbar>(R.id.item_toolbar)
     }
-    lateinit var item_price:String
-    lateinit var item:String
+
+    lateinit var item_price: String
+    lateinit var item: String
     lateinit var dialog: AlertDialog.Builder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view =
@@ -51,58 +52,70 @@ class ItemsAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.item.text = list[position].item
         holder.item_price.text = list[position].itemprice
-        holder.itemView.setOnClickListener {
-            bottom_sheetdia.show()
-            Log.i("q", "in")
-            val previtem = holder.item.text.toString()
-            val previtemprice = holder.item_price.text.toString()
-            val item = bottom_sheetdia.findViewById<EditText>(R.id.item_et)
-            val item_price = bottom_sheetdia.findViewById<EditText>(R.id.itemprice_et)
-            item?.setText(previtem)
-            item_price?.setText(previtemprice)
-            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility = View.GONE
-            bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)?.visibility =
-                View.VISIBLE
-            val bt = bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)
-            bottom_sheetdia.findViewById<TextView>(R.id.textView)?.text = "EDIT"
-            bt?.setOnClickListener {
-                if (item_price?.text.toString() != "") {
-                    val db = DatabaseHelper(holder.itemView.context)
-                    db.updateitem(
-                        previtem,
-                        previtemprice,
-                        item_price?.text.toString(),
-                        item?.text.toString()
-                    )
-                    db.editdata(previtemprice, item_price?.text.toString(), mainvalue, date)
-                    datelist = db.readdata()
-                    for (i in monthlist) {
-                        if (i.month == month) {
-                            db.editmonth(
-                                i.month,
+        holder.toolbar.inflateMenu(R.menu.item_menu)
+        holder.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.delete_item -> {
+                    dialog.show()
+                    item_price = holder.item_price.text.toString()
+                    item = holder.item.text.toString()
+                }
+                R.id.edit_item -> {
+                    bottom_sheetdia.show()
+                    Log.i("q", "in")
+                    val previtem = holder.item.text.toString()
+                    val previtemprice = holder.item_price.text.toString()
+                    val item = bottom_sheetdia.findViewById<EditText>(R.id.item_et)
+                    val item_price = bottom_sheetdia.findViewById<EditText>(R.id.itemprice_et)
+                    item?.setText(previtem)
+                    item_price?.setText(previtemprice)
+                    bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_add)?.visibility =
+                        View.GONE
+                    bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)?.visibility =
+                        View.VISIBLE
+                    val bt = bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)
+                    bottom_sheetdia.findViewById<TextView>(R.id.textView)?.text = "EDIT"
+                    bt?.setOnClickListener {
+                        if (item_price?.text.toString() != "") {
+                            val db = DatabaseHelper(holder.itemView.context)
+                            db.updateitem(
+                                previtem,
                                 previtemprice,
                                 item_price?.text.toString(),
-                                i.monthvalue
+                                item?.text.toString()
                             )
+                            db.editdata(previtemprice, item_price?.text.toString(), mainvalue, date)
+                            datelist = db.readdata()
+                            for (i in monthlist) {
+                                if (i.month == month) {
+                                    db.editmonth(
+                                        i.month,
+                                        previtemprice,
+                                        item_price?.text.toString(),
+                                        i.monthvalue
+                                    )
+                                }
+                            }
+                            monthlist = db.monthread()
+                            monthrecycler.adapter = MonthAdapter(dia_alldays)
+                            daterecycler.adapter = MyAdapter(datelist, datedialog_del)
+                            list = db.readitems(date)
+                            notifyDataSetChanged()
+                            bottom_sheetdia.dismiss()
+                        } else {
+                            Toast.makeText(
+                                    holder.itemView.context,
+                                    "Enter Something",
+                                    Toast.LENGTH_SHORT
+                                )
+                                .show()
                         }
                     }
-                    monthlist = db.monthread()
-                    monthrecycler.adapter = MonthAdapter(dia_alldays)
-                    daterecycler.adapter = MyAdapter(datelist, datedialog_del)
-                    list = db.readitems(date)
-                    notifyDataSetChanged()
-                    bottom_sheetdia.dismiss()
-                } else {
-                    Toast.makeText(holder.itemView.context, "Enter Something", Toast.LENGTH_SHORT)
-                        .show()
+
+
                 }
             }
-
-        }
-        holder.delete.setOnClickListener {
-            dialog.show()
-            item_price=holder.item_price.text.toString()
-            item=holder.item.text.toString()
+            true
         }
         dialog.setPositiveButton("YES") { dialog, _ ->
             val db = DatabaseHelper(holder.itemView.context)
