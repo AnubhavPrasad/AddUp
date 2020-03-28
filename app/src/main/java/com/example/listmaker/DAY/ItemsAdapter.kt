@@ -66,7 +66,7 @@ class ItemsAdapter(
             val bt = bottom_sheetdia.findViewById<FloatingActionButton>(R.id.bt_update)
             bottom_sheetdia.findViewById<TextView>(R.id.textView)?.text = "EDIT"
             bt?.setOnClickListener {
-                if (item?.text.toString() != "" && item_price?.text.toString() != "") {
+                if (item_price?.text.toString() != "") {
                     val db = DatabaseHelper(holder.itemView.context)
                     db.updateitem(
                         previtem,
